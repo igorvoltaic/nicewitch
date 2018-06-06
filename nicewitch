@@ -43,42 +43,49 @@ BINPATH = '/home/USER/bin'
 #   GH/s  ->  [YOURBECHMARK]e9
 # if you want to switch off some algorithm just put 0 into the value, or comment it out
 
+MINER = {
+    'lyra2rev2': "%s/ccminer -a lyra2v2 -o stratum+tcp://lyra2rev2.%s.nicehash.com:3347 -u %s -p x" % (BINPATH, REGION, USER),
+    'equihash': "%s/bminer -uri stratum://%s:x@equihash.%s.nicehash.com:3357" % (BINPATH, USER, BINPATH),
+    'daggerhashimoto': "%s/ethminer -SP 2 -U -S daggerhashimoto.%s.nicehash.com:3353 -O %s --cuda-parallel-hash 4" %(BINPATH, REGION, USER),
+    'daggerhashimoto_pascal': "%s/claymore/ethdcrminer64 -epool stratum+tcp://daggerhashimoto.%s.nicehash.com:3353 -ewal %s -epsw x -esm 3 -allpools 1 -estale 0 -dpool stratum+tcp://pascal.%s.nicehash.com:3358 -dwal %s -dcoin pasc -mport 0" % (BINPATH, REGION, USER, REGION, USER)
+    }
+
 BENCHMARKS = {
-#    'scrypt': 1208e3, 0,
-#    'sha256': 0, 0,
-#    'scryptnf': [0, 0, (["/home/igor/bin/ccminer","-a","scrypt:10","-o", "stratum+tcp://scrypt.eu.nicehash.com:3333", "-u", USER, "-p", "x"])],
-#    'x11': [28085e3, 0, (["/home/igor/bin/ccminer","-a","x11","-o", "stratum+tcp://x11.eu.nicehash.com:3336", "-u", USER, "-p", "x"])],
-#    'x13': [26380e3, 0, (["/home/igor/bin/ccminer","-a","x13","-o", "stratum+tcp://x13.eu.nicehash.com:3337", "-u", USER, "-p", "x"])],
-#    'keccak': [1685397e3, 0, (["/home/igor/bin/ccminer","-a","keccak","-o", "stratum+tcp://keccak.eu.nicehash.com:3338", "-u", USER, "-p", "x"])],
-#    'x15': [24481e3, 0, (["/home/igor/bin/ccminer","-a","x15","-o", "stratum+tcp://x15.eu.nicehash.com:3339", "-u", USER, "-p", "x"])],
-#    'nist5': [122.084e6, 0, (["/home/igor/bin/ccminer","-a","nist5","-o", "stratum+tcp://nist5.eu.nicehash.com:3340", "-u", USER, "-p", "x"])],
-#    'neoscrypt': [2660e3, 0, (["/home/igor/bin/ccminer","-a","neoscrypt","-o", "stratum+tcp://neoscrypt.eu.nicehash.com:3341", "-u", USER, "-p", "x"])],
+#    'scrypt': 1208e3,
+#    'sha256': 0,
+#    'scryptnf': 0,
+#    'x11': 28085e3,
+#    'x13': 26380e3,
+#    'keccak': 1685397e3,
+#    'x15': 24481e3,
+#    'nist5': 122.084e6,
+#    'neoscrypt': 2660e3,
 #    'lyra2re': 81176e3, 0,
-#    'whirlpoolx': [123917e3, 0, (["/home/igor/bin/ccminer","-a","whirlpool","-o", "stratum+tcp://whirlpoolx.eu.nicehash.com:3343", "-u", USER, "-p", "x"])],
-#    'qubit': [59031e3, 0, (["/home/igor/bin/ccminer","-a","qubit","-o", "stratum+tcp://qubit.eu.nicehash.com:3344", "-u", USER, "-p", "x"])],
-    'quark': [0, 0, (['echo %s,%s,%s' % (USER, REGION, BINPATH)])],
+#    'whirlpoolx': 123917e3,
+#    'qubit': 59031e3,
+    'quark': 100.0e10,
 #    'axiom': 0, 0,
-#    'lyra2rev2': [156000e3, 0, (['%s/ccminer -a lyra2v2 -o stratum+tcp://lyra2rev2.%s.nicehash.com:3347 -u %s -p x' % (BINPATH, REGION, USER)])],
-#    'scryptjanenf16': 0, 0, 
-#    'blake256r8': [0, 0, (["/home/igor/bin/ccminer-alexis","-a","vcash","-o", "stratum+tcp://blake256r8.eu.nicehash.com:3349", "-u", USER, "-p", "x"])],
-#    'blake256r14': 0, 0,
-#    'blake256r8vnl': 0, 0,
-#    'hodl': 0, 0,
-#    'daggerhashimoto': [82.023166e6, 0, (['/home/igor/bin/ethminer', '-SP', '2', '-U', '-S', ('daggerhashimoto.%s.nicehash.com:3353' % REGION), '-O', USER, "--cuda-parallel-hash", "4"])],
-#    'decred': [7493288e3, 0, (["/home/igor/bin/ccminer","-a","decred","-o", "stratum+tcp://decred.eu.nicehash.com:3354", "-u", USER, "-p", "x"])],
-#    'cryptonight': [0, 0, (["/home/igor/bin/ccminer","-a","cryptonight","-o", "stratum+tcp://cryptonight.eu.nicehash.com:3355", "-u", USER, "-p", "x"])],
-#    'lbry': [741.751e6, 0, (["/home/igor/bin/ccminer","-a","lbry","-o", "stratum+tcp://lbry.eu.nicehash.com:3356", "-u", USER, "-p", "x"])],
-#    'equihash': [2000, 0, (['%s/bminer -uri stratum://%s:x@equihash.%s.nicehash.com:3357' % (BINPATH, USER, BINPATH)])],
-#    'pascal': 0, 0,
-#    'x11gost': [0, 0, (["/home/igor/bin/ccminer-alexis","-a","sib","-o", "stratum+tcp://x11gost.eu.nicehash.com:3359", "-u", USER, "-p", "x"])],
-#    'sia': [3393433e3, 0, (["/home/igor/bin/ccminer", "-a", "sia", "-o", "stratum+tcp://sia.eu.nicehash.com:3360", "-u", USER])],
-#    'blake2s': 11204791e3, 0,
-#    'skunk': [30594e3, 0, (["/home/igor/bin/ccminer","-a","skunk","-o", "stratum+tcp://skunk.eu.nicehash.com:3362", "-u", USER, "-p", "x"])],
-#    'daggerhashimoto_pascal': [82.35e6, 822.5e6, (["/home/igor/bin/claymore/ethdcrminer64", "-epool", "stratum+tcp://daggerhashimoto.eu.nicehash.com:3353", "-ewal", USER, "-epsw", "x", "-esm", "3", "-allpools", "1", "-estale", "0", "-dpool", "stratum+tcp://pascal.eu.nicehash.com:3358", "-dwal", USER, "-dcoin", "pasc", "-mport", "0"])],
-#    'daggerhashimoto_decred': [81.280e6, 812.2e6, (["/home/igor/bin/claymore/ethdcrminer64", "-epool", "stratum+tcp://daggerhashimoto.eu.nicehash.com:3353", "-ewal", USER, "-epsw", "x", "-esm", "3", "-allpools", "1", "-estale", "0", "-dpool", "stratum+tcp://decred.eu.nicehash.com:3354", "-dwal", USER, "-dcoin", "dcr", "-mport", "0"])],
-#    'daggerhashimoto_sia': [82.5e6, 825e6, (["/home/igor/bin/claymore/ethdcrminer64", "-epool", "stratum+tcp://daggerhashimoto.eu.nicehash.com:3353", "-ewal", USER, "-epsw", "x", "-esm", "3", "-allpools", "1", "-estale", "0", "-dpool", "stratum+tcp://sia.eu.nicehash.com:3360", "-dwal", USER, "-dcoin", "sc", "-mport", "0"])],
-#    'daggerhashimoto_blake2s': [82.5e6, 0, (["/home/igor/bin/claymore/ethdcrminer64", "-epool", "stratum+tcp://daggerhashimoto.eu.nicehash.com:3353", "-ewal", USER, "-epsw", "x", "-esm", "3", "-allpools", "1", "-estale", "0", "-dpool", "stratum+tcp://blake2s.eu.nicehash.com:3361", "-dwal", USER, "-dcoin", "blake2s", "-mport", "0"])],
-#    'daggerhashimoto_keccak': [77.2e6, 770.5e6, (["/home/igor/bin/claymore/ethdcrminer64", "-epool", "stratum+tcp://daggerhashimoto.eu.nicehash.com:3353", "-ewal", USER, "-epsw", "x", "-esm", "3", "-allpools", "1", "-estale", "0", "-dpool", "stratum+tcp://keccak.eu.nicehash.com:3338", "-dwal", USER, "-dcoin", "keccak", "-mport", "0"])]
+    'lyra2rev2': 156000.0e3,
+#    'scryptjanenf16': 0, 
+#    'blake256r8': [0,
+#    'blake256r14': 0,
+#    'blake256r8vnl': 0,
+#    'hodl': 0,
+#    'daggerhashimoto': 113.0e6,
+#    'decred': 7493288e3,
+#    'cryptonight': 0,
+#    'lbry': 741.751e6,
+    'equihash': 2000.0,
+#    'pascal': 0,
+#    'x11gost': 0,
+#    'sia': 3393433e3,
+#    'blake2s': 11204791e3,
+#    'skunk': 30594e3,
+#    'daggerhashimoto_pascal': [82.35e6, 822.5e6],
+#    'daggerhashimoto_decred': [81.280e6, 812.2e6],
+#    'daggerhashimoto_sia': [82.5e6, 825e6],
+#    'daggerhashimoto_blake2s': [82.5e6, 0],
+#    'daggerhashimoto_keccak': [77.2e6, 770.5e6]
     }
 
 PROFIT_SWITCH_THRESHOLD = 0.1
@@ -124,7 +131,7 @@ def best_algo():
         if '_' in algo:
             payrates[algo] = (sum([pay(multi_algo, benchmarks[algo][i]) for i, multi_algo in enumerate(algo.split('_'))]))
         else:
-            payrates[algo] = (pay(algo, benchmarks[algo][0]))
+            payrates[algo] = (pay(algo, benchmarks[algo]))
     best_algo_name = max(payrates.items(), key=operator.itemgetter(1))[0]
     best_algo_rate = max(payrates.values())
     return best_algo_name, best_algo_rate
@@ -143,7 +150,8 @@ def main():
     
     benchmarks = BENCHMARKS
     def choose_miner():
-        args = shlex.split(benchmarks[current_algo_name][2])
+        miner = MINER
+        args = shlex.split(miner[current_algo_name])
         p = subprocess.Popen(args)
         return p
 
@@ -151,26 +159,32 @@ def main():
     current_algo_name = ""
 
     while True:
-        best_algo_name, best_algo_rate = best_algo()
-        print('best = %s' % best_algo_name)
-        print('current = %s' % current_algo_name)
-        if current_algo_rate == 0:
-            current_algo_rate = best_algo_rate
-            current_algo_name = best_algo_name
-            print('new_current = %s' % current_algo_name)
-            p = choose_miner()
-            print(p.pid)
-        elif current_algo_name != best_algo_name and (best_algo_rate/current_algo_rate >= 1.0 + PROFIT_SWITCH_THRESHOLD):
-            p.kill()
-            p.wait()
-            current_algo_rate = best_algo_rate
-            current_algo_name = best_algo_name
-            print('new_current = %s' % current_algo_name)
-            p = choose_miner()
-            print(p.pid)            
+        try:
+            best_algo_name, best_algo_rate = best_algo()
+            print("[*] best = %s" % best_algo_name)
+            print("[*] current = %s" % current_algo_name)
+            if current_algo_rate == 0:
+                current_algo_rate = best_algo_rate
+                current_algo_name = best_algo_name
+                print("[*] new_current = %s" % current_algo_name)
+                p = choose_miner()
+                print("[*] PID %s" % p.pid)
+            elif current_algo_name != best_algo_name and (best_algo_rate/current_algo_rate >= 1.0 + PROFIT_SWITCH_THRESHOLD):
+                p.kill()
+                p.wait()
+                current_algo_rate = best_algo_rate
+                current_algo_name = best_algo_name
+                print("[*] new_current = %s" % current_algo_name)
+                p = choose_miner()
+                print("[*] PID %s" % p.pid)            
         
-        time.sleep(UPDATE_INTERVAL)
+            time.sleep(UPDATE_INTERVAL)
     
+        except KeyboardInterrupt:
+            print("\n\n[*] User requested An Interrupt")
+            print("[*] Application Exiting ...")
+            sys.exit(1)
+
 if __name__ == '__main__':
     main()
 

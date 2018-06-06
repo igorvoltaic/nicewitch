@@ -10,7 +10,7 @@
 
 __author__ = "igor_voltaic"
 __email__ = "ibolsch@gmail.com"
-__license__ = "Mozilla Public License Version 2.0"
+__license__ = "GNU GENERAL PUBLIC LICENSE v3.0"
 
 import time
 import shlex

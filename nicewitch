@@ -45,7 +45,7 @@ BINPATH = '/home/USER/bin'
 
 MINER = {
     'lyra2rev2': "%s/ccminer -a lyra2v2 -o stratum+tcp://lyra2rev2.%s.nicehash.com:3347 -u %s -p x" % (BINPATH, REGION, USER),
-    'equihash': "%s/bminer -uri stratum://%s:x@equihash.%s.nicehash.com:3357" % (BINPATH, USER, BINPATH),
+    'equihash': "%s/bminer -uri stratum://%s:x@equihash.%s.nicehash.com:3357" % (BINPATH, USER, REGION),
     'daggerhashimoto': "%s/ethminer -SP 2 -U -S daggerhashimoto.%s.nicehash.com:3353 -O %s --cuda-parallel-hash 4" %(BINPATH, REGION, USER),
     'daggerhashimoto_pascal': "%s/claymore/ethdcrminer64 -epool stratum+tcp://daggerhashimoto.%s.nicehash.com:3353 -ewal %s -epsw x -esm 3 -allpools 1 -estale 0 -dpool stratum+tcp://pascal.%s.nicehash.com:3358 -dwal %s -dcoin pasc -mport 0" % (BINPATH, REGION, USER, REGION, USER)
     }
@@ -63,9 +63,9 @@ BENCHMARKS = {
 #    'lyra2re': 81176e3, 0,
 #    'whirlpoolx': 123917e3,
 #    'qubit': 59031e3,
-    'quark': 100.0e10,
+#    'quark': 100.0e10,
 #    'axiom': 0, 0,
-    'lyra2rev2': 156000.0e3,
+    'lyra2rev2': 156e6,
 #    'scryptjanenf16': 0, 
 #    'blake256r8': [0,
 #    'blake256r14': 0,
@@ -75,7 +75,7 @@ BENCHMARKS = {
 #    'decred': 7493288e3,
 #    'cryptonight': 0,
 #    'lbry': 741.751e6,
-    'equihash': 2000.0,
+    'equihash': 2000,
 #    'pascal': 0,
 #    'x11gost': 0,
 #    'sia': 3393433e3,

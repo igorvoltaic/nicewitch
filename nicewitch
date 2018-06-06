@@ -5,12 +5,12 @@
 # It does the same job as NicehashMinerLegacy swithcing between algorithms and miners
 
 # History:
-#   Special thanks to Ryan Young (rayoung@utexas.edu) for his idea and part of the code from excavator-driver.py
+#   Special thanks to Ryan Young (rayoung@utexas.edu, https://github.com/YoRyan) for his idea and part of the code from excavator-driver.py
 #   2018-02-19: initial version
 
 __author__ = "igor_voltaic"
 __email__ = "ibolsch@gmail.com"
-__license__ = "public domain"
+__license__ = "Mozilla Public License Version 2.0"
 
 import time
 import shlex
@@ -44,6 +44,7 @@ BINPATH = '/home/USER/bin'
 # if you want to switch off some algorithm just put 0 into the value, or comment it out
 
 MINER = {
+ #   'keccak': "echo 'test %s, %s, %s'" % (BINPATH, REGION, USER), #this is meant for testing
     'lyra2rev2': "%s/ccminer -a lyra2v2 -o stratum+tcp://lyra2rev2.%s.nicehash.com:3347 -u %s -p x" % (BINPATH, REGION, USER),
     'neoscrypt': "%s/ccminer -a neoscrypt -o stratum+tcp://neoscrypt.%s.nicehash.com:3341 -u %s -p x" % (BINPATH, REGION, USER),
     'equihash': "%s/bminer -uri stratum://%s:x@equihash.%s.nicehash.com:3357" % (BINPATH, USER, REGION),
@@ -52,7 +53,7 @@ MINER = {
     }
 
 BENCHMARKS = {
-#    'keccak': 1685397e3,
+#    'keccak': 1685397e11,
 #    'nist5': 122.084e6,
     'neoscrypt': 3100e3,
     'lyra2rev2': 156e6,
@@ -100,7 +101,6 @@ def nicehash_multialgo_info():
         paying[name] = float(algorithm['paying'])
         ports[name] = int(algorithm['port'])
     return paying, ports
-    #return paying
 
 #Calculating max payout and return the name of the algorithm with the best profit for given benchmarks
 def best_algo():

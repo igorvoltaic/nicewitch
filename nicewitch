@@ -45,6 +45,7 @@ BINPATH = '/home/USER/bin'
 
 MINER = {
     'lyra2rev2': "%s/ccminer -a lyra2v2 -o stratum+tcp://lyra2rev2.%s.nicehash.com:3347 -u %s -p x" % (BINPATH, REGION, USER),
+    'neoscrypt': "%s/ccminer -a neoscrypt -o stratum+tcp://neoscrypt.%s.nicehash.com:3341 -u %s -p x" % (BINPATH, REGION, USER),
     'equihash': "%s/bminer -uri stratum://%s:x@equihash.%s.nicehash.com:3357" % (BINPATH, USER, REGION),
     'daggerhashimoto': "%s/ethminer -SP 2 -U -S daggerhashimoto.%s.nicehash.com:3353 -O %s --cuda-parallel-hash 4" %(BINPATH, REGION, USER),
     'daggerhashimoto_pascal': "%s/claymore/ethdcrminer64 -epool stratum+tcp://daggerhashimoto.%s.nicehash.com:3353 -ewal %s -epsw x -esm 3 -allpools 1 -estale 0 -dpool stratum+tcp://pascal.%s.nicehash.com:3358 -dwal %s -dcoin pasc -mport 0" % (BINPATH, REGION, USER, REGION, USER)
@@ -53,7 +54,7 @@ MINER = {
 BENCHMARKS = {
 #    'keccak': 1685397e3,
 #    'nist5': 122.084e6,
-#    'neoscrypt': 2660e3,
+    'neoscrypt': 3100e3,
     'lyra2rev2': 156e6,
 #    'daggerhashimoto': 113.0e6,
 #    'decred': 7493288e3,

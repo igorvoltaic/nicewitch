@@ -34,7 +34,7 @@ USER = ('%s.%s' % (WALLET_ADDR, WORKER_NAME))
 REGION = 'eu' # eu, usa, hk, jp, in, br
 
 # Path to the directory with mining software
-BINPATH = '/home/igor/bin'
+BINPATH = '/home/USER/bin'
 
 # Copy & Paste here numbers from benchmark of your miner converted to base unit, H/s
 #   H/s   ->  [YOURBECHMARK]

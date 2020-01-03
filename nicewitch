@@ -8,8 +8,6 @@
 #   Special thanks to Ryan Young (rayoung@utexas.edu, https://github.com/YoRyan) for his idea and part of the code from excavator-driver.py
 #   2018-02-19: initial version
 
-__author__ = "igor_voltaic"
-__email__ = "ibolsch@gmail.com"
 __license__ = "GNU GENERAL PUBLIC LICENSE v3.0"
 
 import time
@@ -30,11 +28,11 @@ from time import sleep
 # User wallet, worker and region settings
 WALLET_ADDR = '37ajn6fULSTfR3HuLdmw9RVPyiJXVrYcQf'
 WORKER_NAME = 'rig1'
-USER = ('%s.%s' % (WALLET_ADDR, WORKER_NAME)) 
+USER = WALLET_ADDR + '.' + WORKER_NAME 
 REGION = 'eu' # eu, usa, hk, jp, in, br
 
 # Path to the directory with mining software
-BINPATH = '/home/USER/bin'
+PATH = '/home/$USER/bin'
 
 # Copy & Paste here numbers from benchmark of your miner converted to base unit, H/s
 #   H/s   ->  [YOURBECHMARK]
@@ -45,11 +43,11 @@ BINPATH = '/home/USER/bin'
 
 MINER = {
  #   'keccak': "echo 'test %s, %s, %s'" % (BINPATH, REGION, USER), #this is meant for testing
-    'lyra2rev2': "%s/ccminer -a lyra2v2 -o stratum+tcp://lyra2rev2.%s.nicehash.com:3347 -u %s -p x" % (BINPATH, REGION, USER),
-    'neoscrypt': "%s/ccminer -a neoscrypt -o stratum+tcp://neoscrypt.%s.nicehash.com:3341 -u %s -p x" % (BINPATH, REGION, USER),
-    'equihash': "%s/bminer -uri stratum://%s:x@equihash.%s.nicehash.com:3357" % (BINPATH, USER, REGION),
-    'daggerhashimoto': "%s/ethminer -SP 2 -U -S daggerhashimoto.%s.nicehash.com:3353 -O %s --cuda-parallel-hash 4" %(BINPATH, REGION, USER),
-    'daggerhashimoto_pascal': "%s/claymore/ethdcrminer64 -epool stratum+tcp://daggerhashimoto.%s.nicehash.com:3353 -ewal %s -epsw x -esm 3 -allpools 1 -estale 0 -dpool stratum+tcp://pascal.%s.nicehash.com:3358 -dwal %s -dcoin pasc -mport 0" % (BINPATH, REGION, USER, REGION, USER)
+    'lyra2rev2': f"{PATH}/ccminer -a lyra2v2 -o stratum+tcp://lyra2rev2.{REGION}.nicehash.com:3347 -u {USER} -p x",
+    'neoscrypt': f"{PATH}/ccminer -a neoscrypt -o stratum+tcp://neoscrypt.{REGION}.nicehash.com:3341 -u {USER} -p x",
+    'equihash': f"{PATH}/bminer -uri stratum://{USER}:x@equihash.{REGION}.nicehash.com:3357",
+    'daggerhashimoto': f"{PATH}/ethminer -SP 2 -U -S daggerhashimoto.{REGION}.nicehash.com:3353 -O {USER} --cuda-parallel-hash 4" %(BINPATH, REGION, USER),
+    'daggerhashimoto_pascal': f"{PATH}/claymore/ethdcrminer64 -epool stratum+tcp://daggerhashimoto.{REGION}.nicehash.com:3353 -ewal {USER} -epsw x -esm 3 -allpools 1 -estale 0 -dpool stratum+tcp://pascal.{REGION}.nicehash.com:3358 -dwal {USER} -dcoin pasc -mport 0"
     }
 
 BENCHMARKS = {
@@ -86,11 +84,11 @@ def nicehash_multialgo_info():
     try:
         response = urllib.request.urlopen(req, None, NICEHASH_TIMEOUT)
     except:
-        if is_internet() == False:
-            print('No Internet Connection, waiting 5 min before reconnect attempt')
+        if check_connection() == False:
+            print('[-] No Internet Connection, waiting 5 min before reconnect attempt')
             time.sleep(300)
         else:
-            print('NiceHash server is not responding, waiting 60 sec before new attmpt')
+            print('[-] NiceHash server is not responding, waiting 60 sec before new attempt')
             time.sleep(UPDATE_INTERVAL)
             return nicehash_multialgo_info()
     query = json.loads(response.read().decode('ascii')) #json.load(response)
@@ -118,7 +116,7 @@ def best_algo():
     return best_algo_name, best_algo_rate
 
 #Checking internet state
-def is_internet():
+def check_connection():
 	try:
 		host = socket.gethostbyname("yandex.ru")
 		s = socket.create_connection((host, 80), 2)
@@ -142,29 +140,29 @@ def main():
     while True:
         try:
             best_algo_name, best_algo_rate = best_algo()
-            print("[*] best = %s" % best_algo_name)
-            print("[*] current = %s" % current_algo_name)
+            print(f"[+] best = {best_algo_name}")
+            print(f"[+] current = {current_algo_name}")
             if current_algo_rate == 0:
                 current_algo_rate = best_algo_rate
                 current_algo_name = best_algo_name
-                print("[*] new_current = %s" % current_algo_name)
+                print(f"[+] new_current = {current_algo_name}")
                 p = choose_miner()
-                print("[*] PID %s" % p.pid)
+                print(f"[+] PID {p.pid}")
             elif current_algo_name != best_algo_name and (best_algo_rate/current_algo_rate >= 1.0 + PROFIT_SWITCH_THRESHOLD):
                 p.kill()
                 p.wait()
                 current_algo_rate = best_algo_rate
                 current_algo_name = best_algo_name
-                print("[*] new_current = %s" % current_algo_name)
+                print(f"[*] new_current = {current_algo_name}")
                 p = choose_miner()
-                print("[*] PID %s" % p.pid)            
+                print(f"[*] PID {p.pid}")            
         
             time.sleep(UPDATE_INTERVAL)
     
         except KeyboardInterrupt:
             print("\n\n[*] User requested An Interrupt")
             print("[*] Application Exiting ...")
-            sys.exit(1)
+            sys.exit(0)
 
 if __name__ == '__main__':
     main()

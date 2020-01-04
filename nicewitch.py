@@ -85,7 +85,7 @@ def main():
                 current_algo_rate = best_algo_rate
                 current_algo_name = best_algo_name
                 print(f"[+] new_current = {current_algo_name}")
-                p = choose_miner(current_algo_rate)
+                p = choose_miner(current_algo_name)
                 print(f"[+] PID {p.pid}")
             elif current_algo_name != best_algo_name and (best_algo_rate/current_algo_rate >= 1.0 + PROFIT_SWITCH_THRESHOLD):
                 p.kill()
@@ -93,7 +93,7 @@ def main():
                 current_algo_rate = best_algo_rate
                 current_algo_name = best_algo_name
                 print(f"[*] new_current = {current_algo_name}")
-                p = choose_miner(current_algo_rate)
+                p = choose_miner(current_algo_name)
                 print(f"[*] PID {p.pid}")            
         
             time.sleep(UPDATE_INTERVAL)

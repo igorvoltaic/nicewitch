@@ -70,30 +70,33 @@ EXCAVATOR_TIMEOUT = 10
 
 # HERE BE DRAGONS
 
+ca_rate = 0   # Current algo rate
+ca_name = ''  # Current algo name
+
 
 def main():
 
-    current_algo_rate = 0
-    current_algo_name = ""
-
     while True:
         try:
-            best_algo_name, best_algo_rate = best_algo()
-            print(f"[+] best = {best_algo_name}")
-            print(f"[+] current = {current_algo_name}")
-            if current_algo_rate == 0:
-                current_algo_rate = best_algo_rate
-                current_algo_name = best_algo_name
-                print(f"[+] new_current = {current_algo_name}")
-                p = choose_miner(current_algo_name)
+            paying = nicehash_multialgo_info()
+            ba_name, ba_rate = best_algo(paying)
+            print(f"[+] best = {ba_name}")
+            print(f"[+] current = {ca_name}")
+            if ca_rate:
+                ca_rate = payrate(paying, ca_name, BENCHMARKS[ca_name])
+            if not ca_rate:
+                ca_rate = ba_rate
+                ca_name = ba_name
+                print(f"[+] new_current = {ca_name}")
+                p = choose_miner(ca_name)
                 print(f"[+] PID {p.pid}")
-            elif current_algo_name != best_algo_name and (best_algo_rate/current_algo_rate >= 1.0 + PROFIT_SWITCH_THRESHOLD):
+            elif ca_name != ba_name and (ba_rate/ca_rate >= 1.0 + PROFIT_SWITCH_THRESHOLD):
                 p.kill()
                 p.wait()
-                current_algo_rate = best_algo_rate
-                current_algo_name = best_algo_name
-                print(f"[*] new_current = {current_algo_name}")
-                p = choose_miner(current_algo_name)
+                ca_rate = ba_rate
+                ca_name = ba_name
+                print(f"[*] new_current = {ca_name}")
+                p = choose_miner(ca_name)
                 print(f"[*] PID {p.pid}")            
         
             time.sleep(UPDATE_INTERVAL)
@@ -120,20 +123,17 @@ def nicehash_multialgo_info():
             return nicehash_multialgo_info()
     rates = json.loads(r.text) 
     paying = {}
-    ports = {}
     for algo in rates['result']['simplemultialgo']:
         name = algo['name']
         paying[name] = float(algo['paying'])
-        ports[name] = int(algo['port'])
-    return paying, ports
+    return paying
 
 
 def payrate(paying, algo, speed):
     return paying[algo] * speed * (24 * 60 * 60) * 1e-11
 
 
-def best_algo():  # Calculating max payout and return the name of the algorithm with the best profit for given benchmarks 
-    paying, ports = nicehash_multialgo_info()
+def best_algo(paying):  # Calculating max payout and return the name of the algorithm with the best profit for given benchmarks 
     b = BENCHMARKS
     payrates = {}
     for algo in b.keys():
